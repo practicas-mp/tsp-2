@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "structures/Map.h"
-#include "algorithms/closest_neigbour.cpp"
+#include "algorithms/nearest_neighbour.cpp"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ int main(int argc, char **argv){
 	if (input_file.is_open()){
 		Map problem(input_file);
 
-		auto solution = closestNeighbour(problem);
+		auto solution = nearestNeighbour(problem);
 
 		cout << solution;
 	} else {

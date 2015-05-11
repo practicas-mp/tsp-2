@@ -6,11 +6,11 @@ BIN = ./bin
 OBJ = ./obj
 
 
-all: $(BIN)/closest_neighbour
+all: $(BIN)/nearest_neighbour
 
 
-bin/closest_neighbour: $(SRC)/structures/Map.h $(SRC)/structures/City.h $(SRC)/structures/Map.cpp $(SRC)/algorithms/closest_neigbour.cpp $(SRC)/main.cpp
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -o bin/closest_neighbour
+bin/nearest_neighbour: $(SRC)/structures/Map.h $(SRC)/structures/City.h $(SRC)/structures/Map.cpp $(SRC)/algorithms/nearest_neighbour.cpp $(SRC)/main.cpp
+	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -o bin/nearest_neighbour
 
 
 

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-vector<City> closestNeighbour(Map problem) {
+vector<City> nearestNeighbour(Map problem) {
 	vector<City> cities = problem.getCities();
 
 	for(int i = 0; i < cities.size() - 1; i++){
