@@ -49,8 +49,14 @@ istream& operator>>(istream& is, City &city){
 	return is;
 }
 
+ostream& operator<<(ostream &os, const City &city){
+	os << city.id << "\t" << city.position.x << "\t" << city.position.y;
+
+	return os;
+}
+
 istream& operator>>(istream &is, vector<City> &cities){
-	char garbage;
+	string garbage;
 	int dimension;
 
 	is >> garbage;
@@ -65,7 +71,15 @@ istream& operator>>(istream &is, vector<City> &cities){
 	return is;
 }
 
+ostream& operator<<(ostream &os, const vector<City> &cities){
+	os << "Dimension: " << cities.size() << endl;
+
+	for(auto city : cities){
+		os << city << endl;
+	}
+
+	return os;
+}
+
 
 #endif
-
-

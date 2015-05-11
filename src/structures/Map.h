@@ -1,7 +1,6 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
-#include <unordered_map>
 #include <vector>
 #include <iostream>
 #include "City.h"
@@ -11,7 +10,7 @@ using namespace std;
 class Map {
 private:
 	vector< vector<double> > distances;
-	unordered_map<int, City> cities;	//< City id -> city
+	vector<City> cities;	
 
 	/**
 	 *	This functions adjusts the size of the distance matrix
@@ -27,7 +26,7 @@ private:
 	 *	Sets the internal state for a Map with a certain vector of cities
 	 * 	@param cities vector containing the wanted cities for the map
 	 */
-	void buildMapFromCities(const vector<City> &cities);
+	void buildMapFromCities(const vector<City> cities);
 
 public:
 	/**
@@ -41,9 +40,25 @@ public:
 	 */
 	 Map(istream &is);
 
+	/**
+	 * Gets the cities in the map
+	 * @return the cities in the map
+	 */
+	vector<City> getCities();
+
+	/**
+	 *	Gets the distance between two cities
+	 *	@param first_city_id The id number of the first city
+	 *	@param second_city_id The id number of the second city
+	 * 	@return the distance between both cities
+	 */
+	double getDistanceBetween(int first_city_id, int second_city_id);
+
 
 };
 
 istream& operator>>(istream &is, Map map);
+
+#include "Map.cpp"
 
 #endif

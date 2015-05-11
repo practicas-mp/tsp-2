@@ -1,5 +1,6 @@
 #include "Map.h"
 #include <cassert>
+#include <algorithm>
 
 void Map::adjustSizeOfDistanceMatrix(){
 	assert(cities.size() > 0);
@@ -23,10 +24,8 @@ void Map::computeDistanceMatrix(){
 	}
 }
 
-void Map::buildMapFromCities(const vector<City> &cities){
-	for(auto city : cities){
-		this->cities[city.id] = city;
-	}
+void Map::buildMapFromCities(const vector<City> cities){
+	this->cities = cities;
 
 	this->computeDistanceMatrix();
 }
@@ -39,4 +38,12 @@ Map::Map(istream &is) {
 	vector<City> cities;
 	is >> cities;
 	this->buildMapFromCities(cities);
+}
+
+vector<City> Map::getCities(){
+	return cities;
+}
+
+double Map::getDistanceBetween(int first_city_id, int second_city_id){
+	return this->distances[first_city_id][second_city_id];
 }

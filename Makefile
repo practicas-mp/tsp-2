@@ -6,12 +6,12 @@ BIN = ./bin
 OBJ = ./obj
 
 
-all: obj/Map.o
+all: $(BIN)/closest_neighbour
 
 
+bin/closest_neighbour: $(SRC)/structures/Map.h $(SRC)/structures/City.h $(SRC)/structures/Map.cpp $(SRC)/algorithms/closest_neigbour.cpp $(SRC)/main.cpp
+	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -o bin/closest_neighbour
 
-obj/Map.o: $(INCLUDE)/Map.h $(SRC)/Map.cpp
-	 $(CC) $(CPPFLAGS) -c $(SRC)/Map.cpp -o obj/Map.o
 
 
 install:
