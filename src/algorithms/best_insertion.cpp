@@ -56,6 +56,9 @@ vector <City> bestInsertionPath(const Map &problem){
         cities.erase(cities.begin() + best_insert.second);
     }
 
+
+    partial.push_back(partial[0]);  // Close the path
+
     return partial;
 }
 
