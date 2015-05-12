@@ -19,7 +19,12 @@ $(BIN)/best_insertion: src/algorithms/best_insertion.cpp $(COMMON) $(MAIN)
 $(BIN)/optimum-cost: src/optimum-cost.cpp $(COMMON)
 	$(CC) $(CPPFLAGS) $(SRC)/optimum-cost.cpp -o $@ 	
 
+pdf: memoir.tex
+	pdflatex memoir.tex
+	mv memoir.pdf build
+
 install:
+	mkdir -p build
 	mkdir -p $(BIN)
 	mkdir -p $(OBJ)
 
