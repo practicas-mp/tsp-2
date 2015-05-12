@@ -1,3 +1,6 @@
+/*
+	SRC and algorithm are defined in compilation time in the makefile
+*/
 #include <iostream>
 #include <fstream>
 #include "structures/Map.h"
