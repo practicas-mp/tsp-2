@@ -18,9 +18,9 @@ def compare(binaries, data_files):
 		print data_file, 
 		
 		for binary in binaries:
-			print str(get_cost_in(data_file, binary)/optimum_cost) + "x ",
+			print get_cost_in(data_file, binary)/optimum_cost,
 
-		print
+		print 
 
 
 algorithms = ["best_insertion", "nearest_neighbour"]
