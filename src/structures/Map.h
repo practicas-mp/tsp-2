@@ -55,6 +55,21 @@ public:
 	double getDistanceBetween(int first_city_id, int second_city_id) const;
 
 
+	/**
+	 *	Computes the cost of a given path
+	 *	@param cities the cities in the path
+	 *	@return the cost of the given path
+	 */
+	double computeCostOfPath(const vector<City> &cities) const;
+
+
+	/**
+	 *	Computes the cost of a given path
+	 *	@param city_ids the ids of the cities in the path
+	 *	@return the cost of the given path
+	 */
+	double computeCostOfPath(const vector<int> &city_ids) const;
+
 };
 
 istream& operator>>(istream &is, Map map);

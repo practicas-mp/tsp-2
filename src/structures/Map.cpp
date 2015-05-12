@@ -47,3 +47,25 @@ vector<City> Map::getCities() const {
 double Map::getDistanceBetween(int first_city_id, int second_city_id) const {
 	return this->distances[first_city_id - 1][second_city_id - 1];  // ids go from 1 to N
 }
+
+double Map::computeCostOfPath(const vector<City> &cities) const {
+	
+	vector<int> city_ids;
+
+	// cool c++11 lambdas magic ;)
+	transform(cities.begin(), cities.end(), city_ids.begin(), [] (City city) { 
+		return city.id;
+	});
+
+	return this->computeCostOfPath(city_ids);
+}
+
+double Map::computeCostOfPath(const vector<int> &city_ids) const {
+	double result = 0;
+	
+	for(uint i = 0; i < city_ids.size() - 1; i++){
+		result += this->getDistanceBetween(city_ids[i], city_ids[i + 1]);
+	}
+
+	return result;
+}

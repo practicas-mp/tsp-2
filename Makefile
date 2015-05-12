@@ -23,6 +23,7 @@ install:
 
 clean:
 	rm -f $(OBJ)/*
+	rm -f $(BIN)/*
 
 mrproper: clean
 	rm -fR $(BIN)/* $(DOC)/doxygen

@@ -7,30 +7,21 @@ using namespace std;
 
 double computeCostOfPath(const Map &map, ifstream &route_file){
 	string dimension_token;
-	int dimension, current_origin_id, current_destination_id;
-	double result = 0;
-
+	int dimension;
+	vector<int> city_ids;
+	
 	route_file >> dimension_token;
 	route_file >> dimension;
 
-	int first_city_id;
-	route_file >> first_city_id;
+	while(!route_file.eof()){
+		int city_id;
+		route_file >> city_id;
+		city_ids.push_back(city_id);
+	}
 
-	current_origin_id = first_city_id;
-	route_file >> current_destination_id;
+	city_ids.push_back(city_ids[0]); // close the path
 
-	result += map.getDistanceBetween(current_origin_id, current_destination_id);
-
-	do {
-		current_origin_id = current_destination_id;
-		route_file >> current_destination_id;
-
-		result += map.getDistanceBetween(current_origin_id, current_destination_id);
-	} while (!route_file.eof());
-
-	result += map.getDistanceBetween(current_destination_id, first_city_id); // Close the path
-
-	return result;
+	return map.computeCostOfPath(city_ids);
 }
 
 
