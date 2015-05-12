@@ -7,7 +7,6 @@ MAIN = src/main.cpp
 BIN = ./bin
 OBJ = ./obj
 
-
 all: $(BIN)/nearest_neighbour $(BIN)/best_insertion $(BIN)/optimum-cost
 
 $(BIN)/nearest_neighbour: src/algorithms/nearest_neighbour.cpp $(COMMON) $(MAIN)
@@ -23,6 +22,9 @@ pdf: memoir.tex
 	pdflatex memoir.tex
 	mv memoir.pdf build
 
+compare: all
+	./scripts/compare-algorithms.py
+
 install:
 	mkdir -p build
 	mkdir -p $(BIN)
@@ -30,7 +32,7 @@ install:
 
 clean:
 	rm -f $(OBJ)/*
-	rm -f $(BIN)/*
+	rm -f $(bin)/*
 
 mrproper: clean
 	rm -fR $(BIN)/* $(DOC)/doxygen
