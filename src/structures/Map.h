@@ -44,7 +44,7 @@ public:
 	 * Gets the cities in the map
 	 * @return the cities in the map
 	 */
-	vector<City> getCities();
+	vector<City> getCities() const;
 
 	/**
 	 *	Gets the distance between two cities
@@ -52,7 +52,7 @@ public:
 	 *	@param second_city_id The id number of the second city
 	 * 	@return the distance between both cities
 	 */
-	double getDistanceBetween(int first_city_id, int second_city_id);
+	double getDistanceBetween(int first_city_id, int second_city_id) const;
 
 
 };

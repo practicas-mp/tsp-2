@@ -16,8 +16,8 @@ void Map::adjustSizeOfDistanceMatrix(){
 void Map::computeDistanceMatrix(){
 	this->adjustSizeOfDistanceMatrix();
 	
-	for(int i = 0; i < cities.size(); i++) {
-		for(int j = 0; j <= i; j++) {	// It's symmetric
+	for(uint i = 0; i < cities.size(); i++) {
+		for(uint j = 0; j <= i; j++) {	// It's symmetric
 			double distance = cities[i].distanceTo(cities[j]);
 			distances[i][j] = distances[j][i] = distance;
 		}
@@ -40,10 +40,10 @@ Map::Map(istream &is) {
 	this->buildMapFromCities(cities);
 }
 
-vector<City> Map::getCities(){
+vector<City> Map::getCities() const {
 	return cities;
 }
 
-double Map::getDistanceBetween(int first_city_id, int second_city_id){
-	return this->distances[first_city_id][second_city_id];
+double Map::getDistanceBetween(int first_city_id, int second_city_id) const {
+	return this->distances[first_city_id - 1][second_city_id - 1];  // ids go from 1 to N
 }

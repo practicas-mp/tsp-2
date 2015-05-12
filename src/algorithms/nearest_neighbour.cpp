@@ -7,13 +7,13 @@ using namespace std;
 vector<City> nearestNeighbour(Map problem) {
 	vector<City> cities = problem.getCities();
 
-	for(int i = 0; i < cities.size() - 1; i++){
+	for(uint i = 0; i < cities.size() - 1; i++){
 		
 		double minimum_distance = cities[i].distanceTo(cities[i + 1]);
 		int closest_neighbour_index = i + 1;
 
 		// find the closest neighbour
-		for(int j = i + 1; j < cities.size(); j++){
+		for(uint j = i + 1; j < cities.size(); j++){
 			double current_distance = cities[i].distanceTo(cities[j]);
 
 			if (current_distance < minimum_distance){
