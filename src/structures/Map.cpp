@@ -50,7 +50,7 @@ double Map::getDistanceBetween(int first_city_id, int second_city_id) const {
 
 double Map::computeCostOfPath(const vector<City> &cities) const {
 	
-	vector<int> city_ids;
+	vector<int> city_ids(cities.size());
 
 	// cool c++11 lambdas magic ;)
 	transform(cities.begin(), cities.end(), city_ids.begin(), [] (City city) { 
