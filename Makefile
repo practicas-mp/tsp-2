@@ -18,6 +18,9 @@ $(BIN)/best_insertion: src/algorithms/best_insertion.cpp $(COMMON) $(MAIN)
 $(BIN)/optimum-cost: src/optimum-cost.cpp $(COMMON)
 	$(CC) $(CPPFLAGS) $(SRC)/optimum-cost.cpp -o $@ 	
 
+compare: all
+	./scripts/compare-algorithms.py
+
 install:
 	mkdir -p $(BIN)
 	mkdir -p $(OBJ)
