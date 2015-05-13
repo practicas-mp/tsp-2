@@ -23,7 +23,7 @@ def compare(binaries, data_files):
 		print 
 
 
-algorithms = ["best_insertion", "nearest_neighbour"]
+algorithms = ["best_insertion", "nearest_neighbour", "lkh"]
 maps = filter(lambda filename: len(filename) > 4 and filename[-4:] == ".tsp", os.listdir("./data"))
 maps.sort()
 binaries = map(lambda p: "bin/" + p, algorithms)

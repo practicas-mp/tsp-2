@@ -41,5 +41,5 @@ clean:
 mrproper: clean
 	rm -fR $(BIN)/* $(DOC)/doxygen
 
-.PHONY: all install clean mrproper
+.PHONY: all install clean mrproper pdf compare
 
