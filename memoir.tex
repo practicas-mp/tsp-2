@@ -151,7 +151,7 @@ La tercera solución que proponemos es la de usar la heurística de Lin-Kernigha
 
 Este proceso se puede repetir un número indefinido de veces, ya que a priori no sabemos cuál es la solución óptima como para marcar un límite de bondad de la solución en el que detenernos.
 
-Para el caso que nos ocupa hemos tomado $k=2$, que básicamente le da la vuelta a una porción de la permutación, e iteramos $N^2$ veces, donde $N$ es el número de ciudades. Así, es muy rápido calcular si una cierta mutación del recorrido es beneficiosa o no (dos sumas y dos restas), pero podemos conseguir muy buenos resultados.
+Para el caso que nos ocupa hemos tomado como permutación inicial la generada por la heurística anterior, de forma que mantenemos el orden de eficiencia polinómico obteniendo soluciones aún mejores; y $k=2$, que básicamente le da la vuelta a una porción de la permutación, e iteramos $N^2$ veces, donde $N$ es el número de ciudades. Así, es muy rápido calcular si una cierta mutación del recorrido es beneficiosa o no (dos sumas y dos restas), pero podemos conseguir muy buenos resultados.
 
 \subsection{Comparación de los algoritmos}
 
