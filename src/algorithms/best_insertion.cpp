@@ -15,7 +15,7 @@ pair <int, double> bestPlace(const Map &problem, const vector <City> &partial, c
         curr_incr = problem.getDistanceBetween(partial[(size + i - 1) % size].id, candidate.id);
         curr_incr += problem.getDistanceBetween(partial[i].id, candidate.id);
         curr_incr -= problem.getDistanceBetween(partial[(size + i - 1) % size].id, partial[i].id);
-        increments.push_back(curr_incr);
+        increments[i] = curr_incr;
     }
 
     vector <double>::iterator min_el = min_element(increments.begin(), increments.end());
@@ -28,13 +28,14 @@ bool sortInsertionPairs(pair <int, double> a, pair <int, double> b){
     return a.second < b.second or (a.second == b.second and a.first < b.first);
 }
 
+// Returns a pair indicating where to insert the city and the position of the city
 
 pair <int, int> bestInsertion(const Map &problem, const vector <City> &partial, const vector <City> &left){
-    int size = partial.size();
+    int size = left.size();
     vector <pair <int, double> > increments(size);
 
     for(int i = 0; i < size; ++i){
-        increments.push_back(bestPlace(problem, partial, left[i]));
+        increments[i] = bestPlace(problem, partial, left[i]);
     }
 
     vector <pair <int, double> >::iterator min_el = min_element(increments.begin(), increments.end(), sortInsertionPairs);
@@ -45,6 +46,7 @@ pair <int, int> bestInsertion(const Map &problem, const vector <City> &partial, 
 
 vector <City> bestInsertionPath(const Map &problem){
     vector <City> cities = problem.getCities(), partial;
+    partial.reserve(cities.size());
     partial.push_back(cities[0]);  // TODO: check solution for every starting city
     partial.push_back(cities[1]);  // nearest or farthest?
     cities.erase(cities.begin(), cities.begin() + 2);

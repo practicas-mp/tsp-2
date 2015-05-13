@@ -27,6 +27,7 @@ compare: all
 
 install:
 	mkdir -p build
+	mkdir -p tmp
 	mkdir -p $(BIN)
 	mkdir -p $(OBJ)
 
