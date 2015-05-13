@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string.h>
 #include "structures/Map.h"
+#include <set>
 #include SRC
 
 using namespace std;

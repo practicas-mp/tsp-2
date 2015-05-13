@@ -25,15 +25,16 @@ struct City {
 
 	City() : id(-1) {}	// No garbage
 
-	double distanceTo(const City &other) const;
+	int distanceTo(const City &other) const;
 };
 
-double City::distanceTo(const City &other) const {
-	double horizontal_component = pow((position.x - other.position.x), 2);
-	double vertical_component = pow((position.y - other.position.y), 2);
+int City::distanceTo(const City &other) const {
+	double horizontal_component = (position.x - other.position.x)*(position.x - other.position.x);
+	double vertical_component = (position.y - other.position.y)*(position.y - other.position.y);
 
-	return sqrt(horizontal_component + vertical_component);
+	return sqrt(horizontal_component + vertical_component) + 0.5;	// round to the closest integer
 }
+
 
 istream& operator>>(istream& is, City &city){
 	double x, y;

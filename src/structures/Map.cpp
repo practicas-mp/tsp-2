@@ -1,6 +1,7 @@
 #include "Map.h"
 #include <cassert>
 #include <algorithm>
+#include <set>
 
 void Map::adjustSizeOfDistanceMatrix(){
 	assert(cities.size() > 0);
@@ -44,23 +45,24 @@ vector<City> Map::getCities() const {
 	return cities;
 }
 
-double Map::getDistanceBetween(int first_city_id, int second_city_id) const {
+int Map::getDistanceBetween(int first_city_id, int second_city_id) const {
 	return this->distances[first_city_id - 1][second_city_id - 1];  // ids go from 1 to N
 }
 
-double Map::computeCostOfPath(const vector<City> &cities) const {
+int Map::computeCostOfPath(const vector<City> &cities) const {
 	
 	vector<int> city_ids(cities.size());
 
 	// cool c++11 lambdas magic ;)
-	transform(cities.begin(), cities.end(), city_ids.begin(), [] (City city) { 
+	transform(cities.begin(), cities.end(), city_ids.begin(), [] (City city) {
 		return city.id;
 	});
 
 	return this->computeCostOfPath(city_ids);
 }
 
-double Map::computeCostOfPath(const vector<int> &city_ids) const {
+int Map::computeCostOfPath(const vector<int> &city_ids) const {
+	
 	double result = 0;
 	
 	for(uint i = 0; i < city_ids.size() - 1; i++){

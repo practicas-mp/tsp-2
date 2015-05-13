@@ -21,12 +21,17 @@ $(BIN)/lkh: src/algorithms/lkh.cpp $(COMMON) $(MAIN)
 $(BIN)/optimum-cost: src/optimum-cost.cpp $(COMMON)
 	$(CC) $(CPPFLAGS) $(SRC)/optimum-cost.cpp -o $@ 	
 
+graph-comparison: 
+	./scripts/graph-comparison.sh results/algorithm-comparison.txt
+
+results/algorithm-comparison.txt: compare
+
+compare: all
+	./scripts/compare-algorithms.py > results/algorithm-comparison.txt	
+
 pdf: memoir.tex
 	pdflatex memoir.tex
 	mv memoir.pdf build
-
-compare: all
-	./scripts/compare-algorithms.py
 
 install:
 	mkdir -p build
@@ -36,7 +41,8 @@ install:
 
 clean:
 	rm -f $(OBJ)/*
-	rm -f $(bin)/*
+	rm -f $(BIN)/*
+	rm -rf results
 
 mrproper: clean
 	rm -fR $(BIN)/* $(DOC)/doxygen
