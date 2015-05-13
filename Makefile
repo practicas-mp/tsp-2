@@ -18,8 +18,13 @@ $(BIN)/best_insertion: src/algorithms/best_insertion.cpp $(COMMON) $(MAIN)
 $(BIN)/optimum-cost: src/optimum-cost.cpp $(COMMON)
 	$(CC) $(CPPFLAGS) $(SRC)/optimum-cost.cpp -o $@ 	
 
-compare: all
-	./scripts/compare-algorithms.py
+graph-comparison: results/algorithm-comparison.txt
+	./scripts/graph-comparison.sh results/algorithm-comparison.txt
+
+results/algorithm-comparison.txt: compare
+
+compare:
+	./scripts/compare-algorithms.py > results/algorithm-comparison.txt	
 
 install:
 	mkdir -p $(BIN)
@@ -27,7 +32,8 @@ install:
 
 clean:
 	rm -f $(OBJ)/*
-	rm -f $(bin)/*
+	rm -f $(BIN)/*
+	rm -rf results
 
 mrproper: clean
 	rm -fR $(BIN)/* $(DOC)/doxygen

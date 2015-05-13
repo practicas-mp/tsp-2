@@ -12,15 +12,17 @@ def get_cost_in(map_file_name, bin):
 	return float(get_command_output(bin, map_file_name, "cost"))
 
 def compare(binaries, data_files):
+	i = 1
 	for data_file in data_files:
 		data_file = "./data/" + data_file
 		optimum_cost = get_optimum_cost(data_file[:-4])
-		print data_file, 
+		print i, data_file, 
 		
 		for binary in binaries:
 			print get_cost_in(data_file, binary)/optimum_cost,
 
 		print 
+		i += 1
 
 
 algorithms = ["best_insertion", "nearest_neighbour"]
