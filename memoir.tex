@@ -116,7 +116,7 @@ Travelling salesman problem} % Subtitle
 \begin{abstract}
 En esta ocasión vamos a continuar nuestro estudio de los algoritmos voraces (greedy), ahora aplicados a uno de los problemas más famosos de las ciencias de la computación: el problema del viajante de comercio (TSP, por sus siglas en inglés). El problema consiste en, dada una lista de ciudades (en nuestro caso puntos en un plano) y una métrica (asumimos la euclídea, pero pueden ser pesos de las aristas de un grafo) encontrar la ruta más corta que pasa exactamente una vez por cada ciudad (volviendo a la de partida).
 
-Este problema ha sido estudiado durante casi cien años desde su planteamiento en 1930, pero sigue siendo interesante en tanto que es un problema NP-hard (i.e., cualquier problema en NP puede ser reducido a él en tiempo polinómico).
+Este problema ha sido estudiado durante casi cien años desde su planteamiento en 1930, pero sigue siendo interesante en tanto que es un problema NP-hard, i.e., cualquier problema en NP puede ser reducido a él en tiempo polinómico.
 \end{abstract}
 
 \vspace{30pt} % Some vertical space between the abstract and first section
@@ -144,10 +144,14 @@ Pese a lo simple de esta solución, en el caso medio puede encontrar rutas sólo
 \subsection{Solución con inserción}
 El segundo algoritmo también es, sensu lato, greedy, aunque más sofisticado que el anterior. Tomamos un par de ciudades cualesquiera y, en cada paso, comprobamos cuánto costaría insertar cada ciudad no visitada en cada posición posible de la ruta, y tomamos el mínimo. 
 
-Para calcular cuánto nos "cuesta" insertar una ciudad en un cierto punto simplemente sumamos la distancia de la nueva ciudad a la que va antes, la distancia a la que va después y restamos la distancia entre las ciudades anterior y posterior.
+Para calcular cuánto nos \"cuesta\" insertar una ciudad en un cierto punto simplemente sumamos la distancia de la nueva ciudad a la que va antes, la distancia a la que va después y restamos la distancia entre las ciudades anterior y posterior.
 
-\subsection{Solución con pollas}
-8====D
+\subsection{Solución Lin-Kernighan (2-opt)}
+La tercera solución que proponemos es la de usar la heurística de Lin-Kernighan en su versión más simple. Esta heurística es un algoritmo genético que toma una permutación de las ciudades y, en cada paso, elimina $k$ aristas no contiguas, de forma que nos quedan $k$ \textit{clusters}. Ahora los pegamos entre sí (debe quedarnos de nuevo un ciclo conexo) en el orden que queramos, y, si el coste actual de la permutación es menor, nos la quedamos como solución actual.
+
+Este proceso se puede repetir un número indefinido de veces, ya que a priori no sabemos cuál es la solución óptima como para marcar un límite de bondad de la solución en el que detenernos.
+
+Para el caso que nos ocupa hemos tomado $k=2$, que básicamente le da la vuelta a una porción de la permutación, e iteramos $N^2$ veces, donde $N$ es el número de ciudades. Así, es muy rápido calcular si una cierta mutación del recorrido es beneficiosa o no (dos sumas y dos restas), pero podemos conseguir muy buenos resultados.
 
 \subsection{Comparación de los algoritmos}
 
