@@ -37,7 +37,8 @@
 \usepackage[protrusion=true,expansion=true]{microtype}
 \usepackage{mathpazo}
 \usepackage{amsthm}
-\usepackage{eurosym}
+\usepackage{graphicx}
+
 
 
 
@@ -137,24 +138,44 @@ Dada una lista de ciudades (puntos del plano ${\mathbb Q}^2$) encontrar la ruta 
 
 \section{Soluciones}
 \subsection{Solución greedy: vecino más cercano}
+\makebox[\textwidth]{\includegraphics{./results/Vecino Mas Cercano.png}}
 El primer algoritmo es trivial: empezamos en una ciudad cualquiera y, en cada paso, visitamos la ciudad más cercana.
 
 Pese a lo simple de esta solución, en el caso medio puede encontrar rutas sólo un 25\% más largas que la óptima. Sin embargo, es cierto también que se pueden encontrar ejemplos de disposiciones en las que este algoritmo encuentra la peor ruta posible.
 
 \subsection{Solución con inserción}
+\makebox[\textwidth]{\includegraphics{./results/Mejor Insercion.png}}
 El segundo algoritmo también es, sensu lato, greedy, aunque más sofisticado que el anterior. Tomamos un par de ciudades cualesquiera y, en cada paso, comprobamos cuánto costaría insertar cada ciudad no visitada en cada posición posible de la ruta, y tomamos el mínimo. 
 
 Para calcular cuánto nos \"cuesta\" insertar una ciudad en un cierto punto simplemente sumamos la distancia de la nueva ciudad a la que va antes, la distancia a la que va después y restamos la distancia entre las ciudades anterior y posterior.
 
 \subsection{Solución Lin-Kernighan (2-opt)}
+\makebox[\textwidth]{\includegraphics{./results/LKH.png}}
 La tercera solución que proponemos es la de usar la heurística de Lin-Kernighan en su versión más simple. Esta heurística es un algoritmo genético que toma una permutación de las ciudades y, en cada paso, elimina $k$ aristas no contiguas, de forma que nos quedan $k$ \textit{clusters}. Ahora los pegamos entre sí (debe quedarnos de nuevo un ciclo conexo) en el orden que queramos, y, si el coste actual de la permutación es menor, nos la quedamos como solución actual.
 
 Este proceso se puede repetir un número indefinido de veces, ya que a priori no sabemos cuál es la solución óptima como para marcar un límite de bondad de la solución en el que detenernos.
 
 Para el caso que nos ocupa hemos tomado como permutación inicial la generada por la heurística anterior, de forma que mantenemos el orden de eficiencia polinómico obteniendo soluciones aún mejores; y $k=2$, que básicamente le da la vuelta a una porción de la permutación, e iteramos $N^2$ veces, donde $N$ es el número de ciudades. Así, es muy rápido calcular si una cierta mutación del recorrido es beneficiosa o no (dos sumas y dos restas), pero podemos conseguir muy buenos resultados.
 
-\subsection{Comparación de los algoritmos}
+Para el caso que nos ocupa hemos tomado $k=2$, que básicamente le da la vuelta a una porción de la permutación, e iteramos $N^2$ veces, donde $N$ es el número de ciudades. Así, es muy rápido calcular si una cierta mutación del recorrido es beneficiosa o no (dos sumas y dos restas). Para obtener mejores resultados, hemos hecho que nuestro algoritmo 2-opt parta de la solución encontrada por el algoritmo de mejor inserción.
 
-DEATH MATCH
+\section{Comparación de los algoritmos}
+Para poder comprobar la bondad de nuestros algoritmos, se nos suministraron múltples sets de datos (procedentes de TSPLib) con sus respectivas rutas óptimas. De aquellos mapas que se nos dieron, tuvimos que comprobar en la documentación de TSPLib cuáles de esos mapas estaban diseñados con la intención de usar la distancia euclídea, que es la que nos ocupa. Una vez conseguimos eliminar los mapas no preparados para nuestro trabajo, llegamos a un set de datos con 17 mapas, sobre el que podíamos ejecutar nuestros algoritmos y comparar los costes obtenidos con los de las soluciones óptimas.
+
+Tras numerar los mapas por orden alfabético y ejecutar los algoritmos llegamos a los siguientes resultados.
+
+
+\makebox[\textwidth]{\includegraphics{./results/algorithm-comparison}}
+
+
+Comprobando el comportamiento individual de los algoritmos llegamos a los siguientes datos:
+\begin{itemize}
+	\item Vecino más cercano: 26.204\% más costoso que el óptimo.
+	\item Mejor inserción: 17.349\% más costoso que el óptimo
+	\item LKH: 12.506\% más costoso que el óptimo.
+\end{itemize}
+
+\section{Conclusiones}
+Tras realizar esta práctica, hemos llegado a los resultados esperados. La heurística más sencilla y más ingenua es la que peores resultados ha obtenido en esta ocasión. En segundo lugar encontramos la heurística de mejor inserción, y en primer lugar la LKH. Teniendo en cuenta la implementación que hicimos del último algoritmo, era obvio que esto sucedería de esta forma, ya que se partía de la solución de la mejor inserción, y de ahí solo podía mejorar.
 
 \end{document}
