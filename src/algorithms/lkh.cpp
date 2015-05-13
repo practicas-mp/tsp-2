@@ -1,4 +1,5 @@
 #include "structures/Map.h"
+#include "algorithms/best_insertion.cpp"
 #include <algorithm>
 #include <limits>
 #include <stdlib.h>
@@ -11,7 +12,7 @@ using namespace std;
 vector <City> LKH(const Map &problem){
     srand(time(0));
 
-    vector <City> cities = problem.getCities(), permutation;
+    vector <City> cities = bestInsertionPath(problem), permutation;
     int size = cities.size(),
         a, b, aux,
         prev_city_a, next_city_a,
