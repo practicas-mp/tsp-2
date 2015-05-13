@@ -9,7 +9,7 @@ using namespace std;
 
 class Map {
 private:
-	vector< vector<double> > distances;
+	vector< vector<int> > distances;
 	vector<City> cities;	
 
 	/**
@@ -52,7 +52,7 @@ public:
 	 *	@param second_city_id The id number of the second city
 	 * 	@return the distance between both cities
 	 */
-	double getDistanceBetween(int first_city_id, int second_city_id) const;
+	int getDistanceBetween(int first_city_id, int second_city_id) const;
 
 
 	/**
@@ -60,7 +60,7 @@ public:
 	 *	@param cities the cities in the path
 	 *	@return the cost of the given path
 	 */
-	double computeCostOfPath(const vector<City> &cities) const;
+	int computeCostOfPath(const vector<City> &cities) const;
 
 
 	/**
@@ -68,7 +68,7 @@ public:
 	 *	@param city_ids the ids of the cities in the path
 	 *	@return the cost of the given path
 	 */
-	double computeCostOfPath(const vector<int> &city_ids) const;
+	int computeCostOfPath(const vector<int> &city_ids) const;
 
 };
 

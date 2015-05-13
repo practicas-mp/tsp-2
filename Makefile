@@ -18,7 +18,7 @@ $(BIN)/best_insertion: src/algorithms/best_insertion.cpp $(COMMON) $(MAIN)
 $(BIN)/optimum-cost: src/optimum-cost.cpp $(COMMON)
 	$(CC) $(CPPFLAGS) $(SRC)/optimum-cost.cpp -o $@ 	
 
-graph-comparison: results/algorithm-comparison.txt
+graph-comparison: 
 	./scripts/graph-comparison.sh results/algorithm-comparison.txt
 
 results/algorithm-comparison.txt: compare
@@ -29,8 +29,6 @@ compare: all
 pdf: memoir.tex
 	pdflatex memoir.tex
 	mv memoir.pdf build
-
-
 
 install:
 	mkdir -p build

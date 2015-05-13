@@ -13,10 +13,12 @@ double computeCostOfPath(const Map &map, ifstream &route_file){
 	route_file >> dimension_token;
 	route_file >> dimension;
 
-	while(!route_file.eof()){
+	int i = 0;
+	while(i < dimension){
 		int city_id;
 		route_file >> city_id;
 		city_ids.push_back(city_id);
+		i++;
 	}
 
 	city_ids.push_back(city_ids[0]); // close the path
