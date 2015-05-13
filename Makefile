@@ -23,10 +23,18 @@ graph-comparison: results/algorithm-comparison.txt
 
 results/algorithm-comparison.txt: compare
 
-compare:
+compare: all
 	./scripts/compare-algorithms.py > results/algorithm-comparison.txt	
 
+pdf: memoir.tex
+	pdflatex memoir.tex
+	mv memoir.pdf build
+
+
+
 install:
+	mkdir -p build
+	mkdir -p tmp
 	mkdir -p $(BIN)
 	mkdir -p $(OBJ)
 
