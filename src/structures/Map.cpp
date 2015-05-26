@@ -49,6 +49,10 @@ int Map::getDistanceBetween(int first_city_id, int second_city_id) const {
 	return this->distances[first_city_id - 1][second_city_id - 1];  // ids go from 1 to N
 }
 
+const vector <vector <int> >& Map::getMatrix() const {
+	return this->distances;
+}
+
 int Map::computeCostOfPath(const vector<City> &cities) const {
 	
 	vector<int> city_ids(cities.size());

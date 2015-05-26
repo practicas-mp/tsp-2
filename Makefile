@@ -7,7 +7,7 @@ MAIN = src/main.cpp
 BIN = ./bin
 OBJ = ./obj
 
-all: $(BIN)/nearest_neighbour $(BIN)/best_insertion $(BIN)/lkh $(BIN)/optimum-cost
+all: $(BIN)/nearest_neighbour $(BIN)/best_insertion $(BIN)/lkh $(BIN)/bb $(BIN)/optimum-cost
 
 $(BIN)/nearest_neighbour: src/algorithms/nearest_neighbour.cpp $(COMMON) $(MAIN)
 	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=nearestNeighbour" -D"SRC=\"../$<\"" -o $@ 
@@ -16,7 +16,10 @@ $(BIN)/best_insertion: src/algorithms/best_insertion.cpp $(COMMON) $(MAIN)
 	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=bestInsertionPath" -D"SRC=\"../$<\"" -o $@ 
 
 $(BIN)/lkh: src/algorithms/lkh.cpp $(COMMON) $(MAIN)
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=LKH" -D"SRC=\"../$<\"" -o $@ 
+	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=LKH" -D"SRC=\"../$<\"" -o $@
+
+$(BIN)/bb: src/algorithms/bb.cpp $(COMMON) $(MAIN)
+	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=bb" -D"SRC=\"../$<\"" -o $@
 
 $(BIN)/optimum-cost: src/optimum-cost.cpp $(COMMON)
 	$(CC) $(CPPFLAGS) $(SRC)/optimum-cost.cpp -o $@ 	

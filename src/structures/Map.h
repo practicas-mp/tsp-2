@@ -54,6 +54,11 @@ public:
 	 */
 	int getDistanceBetween(int first_city_id, int second_city_id) const;
 
+	/**
+	 *	Returns the distances matrix of the map
+	 * 	@return the matrix
+	 */
+	const vector <vector <int> >& getMatrix() const;
 
 	/**
 	 *	Computes the cost of a given path
