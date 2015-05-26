@@ -4,6 +4,8 @@
 #include <utility>
 #include <vector>
 #include <queue>
+#include <iostream>
+#include <unordered_set>
 
 using namespace std;
 
@@ -21,25 +23,16 @@ template <class T> pair <T, T> findMinimums(vector <T> elements){
     return make_pair(mm, m);
 }
 
-
+// ToDo: make in-place
 template <class T> void permute(vector <T> &elements, vector <int> indices){
-    uint i = 0, size = indices.size();
-    int aux_index;
-    T aux_el;
+    
+    vector<T> result;
 
-    while(i < size){
-        if(indices[i] == i){
-            ++i;
-        } else {
-            aux_el = elements[i];
-            elements[i] = elements[indices[i]];
-            elements[indices[i]] = aux_el;
-
-            aux_index = indices[i];
-            indices[i] = indices[indices[i]];
-            indices[aux_index] = aux_index; 
-        }
+    for (auto index : indices) {
+        result.push_back(elements[index]);
     }
+    
+    elements = result;
 }
 
 
@@ -47,7 +40,7 @@ int lowerBound(const vector <int> &left, const vector <vector <int> > &distances
     int acc = 0;
 
     for(auto city_id: left){
-        acc += findMinimums(distances[city_id]).second;  // first is 0
+        acc += findMinimums(distances[city_id - 1]).second;  // first is 0
     }
 
     return acc;
@@ -56,56 +49,86 @@ int lowerBound(const vector <int> &left, const vector <vector <int> > &distances
 
 vector <City> bb(const Map &problem) {
     vector <vector <int> > distances = problem.getMatrix();
+
     vector <City> cities = problem.getCities();
-    int size = cities.size(),
-        upper_bound = problem.computeCostOfPath(nearestNeighbour(problem)),
+    uint size = cities.size();
+    vector<int> city_ids(size);
+    
+    transform(
+        cities.begin(), cities.end(), city_ids.begin(), 
+        [] (City city) { return city.id; }
+    );
+
+
+    int upper_bound = problem.computeCostOfPath(nearestNeighbour(problem)),
         curr_cost, curr_diff;
-    vector <int> curr_solution(1, 0), best_solution, left;
+    vector <int> curr_solution(1, 1), best_solution, left;
     vector <int>::iterator first, last;
     best_solution.reserve(size);
     left.reserve(size);
-    pair <int, vector <int> > curr = make_pair(0, curr_solution);
+    int minimum_cost = lowerBound(city_ids, distances);
+    pair <int, vector <int> > curr = make_pair(minimum_cost, curr_solution);
     priority_queue <pair <int, vector <int> > > ref;
     ref.push(curr);
+    
 
     while(not ref.empty()){
         curr = ref.top();
         ref.pop();
 
-        if(upper_bound > curr.first){
-            curr_solution = curr.second;
-            curr_cost = problem.computeCostOfPath(curr_solution);
+        if(upper_bound >= -curr.first){   // upper_bound > current_solution_lower_bound
+            curr_solution = curr.second;    
 
-            if(curr_solution.size() < size){
+            if(curr_solution.size() < size){    // if the solution is not complete yet
                 first = curr_solution.begin(), last = curr_solution.end();
-
-                for(int i = 0; i < size; ++i){
-                    if(find(first, last, i) == last){
-                        left.push_back(i);
+                unordered_set<int> visited(first, last);
+                
+                for(uint i = 0; i < size; ++i){
+                    if(visited.find(i + 1) == visited.end()){
+                        left.push_back(i + 1);  // push city ids, not indexes
                     }
                 }
 
-                curr_cost += lowerBound(left, distances);
+
+                curr_cost = -curr.first;
 
                 for(auto city_id: left){
-                    curr_diff = problem.getDistanceBetween(curr_solution.back() + 1,
-                                                            city_id + 1);
-                    curr_solution.push_back(city_id);
+                    double minimum_city_cost = findMinimums(distances[city_id - 1]).second;
+                    curr_diff = problem.getDistanceBetween(curr_solution.back(),
+                                                            city_id);
+                    curr_solution.push_back(city_id);   // city_ids, not indexes
 
-                    ref.push(make_pair(curr_cost + curr_diff, curr_solution));
+                    ref.push(make_pair(-(curr_cost - minimum_city_cost + curr_diff) , curr_solution));
                     curr_solution.pop_back();
                 }
                 
                 left.clear();
             } else {  // complete solution
-                if(curr_cost < upper_bound){
+                curr_solution.push_back(curr_solution[0]); // close the path
+                curr_cost = problem.computeCostOfPath(curr_solution);
+
+                if(curr_cost <= upper_bound){
+                    cout << "Solucion minima encontrada" << curr_cost << endl;
                     upper_bound = curr_cost;
+
                     best_solution = curr_solution;
                 }
+
+                curr_solution.pop_back();   // remove the loop
             }
+        } else {
+            cout << "Se debería acabar aqui" << endl;
+            break;
         }
     }
 
+    // transform best solution to indexes
+    transform(
+        best_solution.begin(), best_solution.end(), best_solution.begin(), 
+        [] (int city_id) { return city_id - 1; }
+    );
+
     permute(cities, best_solution);
+
     return cities;
 }
