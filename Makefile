@@ -32,9 +32,11 @@ results/algorithm-comparison.txt: compare
 compare: all
 	./scripts/compare-algorithms.py > results/algorithm-comparison.txt	
 
-pdf: memoir.tex
+pdf: memoir.tex bbmemoir.tex
 	pdflatex memoir.tex
 	mv memoir.pdf build
+	pdflatex bbmemoir.tex
+	mv bbmemoir.pdf build
 
 install:
 	mkdir -p build
