@@ -115,7 +115,7 @@ Travelling salesman problem} % Subtitle
 %% Resumen (Descomentar para usarlo)
 \renewcommand{\abstractname}{Abstract} % Uncomment to change the name of the abstract to something else
 \begin{abstract}
-En esta ocasión vamos a continuar nuestro estudio de los algoritmos branch and bound, ahora aplicados a uno de los problemas más famosos de las ciencias de la computación: el problema del viajante de comercio (TSP, por sus siglas en inglés). Es la segunda ocasión en la que nos enfrentamos a este problema, pero esta vez buscaremos una solución exacta. Recordaremos que el problema consiste en, dada una lista de ciudades (en nuestro caso puntos en un plano) y una métrica (asumimos la euclídea, pero pueden ser pesos de las aristas de un grafo) encontrar la ruta más corta que pasa exactamente una vez por cada ciudad (volviendo a la de partida).
+En esta ocasión vamos a continuar nuestro estudio de los algoritmos branch and bound, ahora aplicados a uno de los problemas más famosos de las ciencias de la computación: el problema del viajante de comercio (TSP, por sus siglas en inglés). Es la segunda ocasión en la que nos enfrentamos a este problema, pero esta vez buscaremos una solución exacta. Recordaremos que el problema consiste en, dada una lista de ciudades (en nuestro caso puntos en un plano) y una métrica (asumimos la euclídea, pero pueden ser pesos de las aristas de un grafo) encontrar la ruta más corta que pasa exactamente una vez por cada ciudad (volviendo a la de partida). Acabaremos realizando una test de rendimiento de la solución, y comprobaremos que es mucho mejor que otras alternativas exactas.
 
 Este problema ha sido estudiado durante casi cien años desde su planteamiento en 1930, pero sigue siendo interesante en tanto que es un problema NP-hard, i.e., cualquier problema en NP puede ser reducido a él en tiempo polinómico.
 \end{abstract}
@@ -140,15 +140,15 @@ Dada una lista de ciudades (puntos del plano ${\mathbb Q}^2$) encontrar la ruta 
 Sea $M_{i,j}$ la matriz de distancias del mapa que se nos presenta, con $k$ ciudades. Entendemos que el objetivo de nuestro algoritmo es encontrar una permutación $\sigma$ de las $k$ ciudades parar minimizar la siguiente función
 
 
-$f(\sigma) = \sum_{i \in 1..k}{M_{\sigma(i - 1), \sigma(i)}}$
+$f(\sigma) = \sum\limits_{i=1}^{k} M_{\sigma(i - 1), \sigma(i)}$
 
-El número de permutaciones de $k$ elementos es $k!$, por lo que el algoritmo trivial sería $O(k!)$ en el tamaño del problema. Debido a que la cantidad de permutaciones a probar es demasiado grande, se hace necesario conseguir reducir el tamaño de candidatos a probar. Eso lo conseguiremos mediante la poda.
+El número de permutaciones de $k$ elementos es $k!$, por lo que un algoritmo que comprobara todas sería inviable. Debido a que la cantidad de permutaciones a probar es demasiado grande, se hace necesario conseguir reducir el tamaño de candidatos a probar. Eso lo conseguiremos mediante la poda.
 
-En cada momento nuestro algoritmo tendrá presente una cota superior global, en este caso el coste de la mejor ruta encontrada hasta ahora. Si vemos que una solución parcial que estamos explorando supera este coste, la descartaremos inmediatamente. Más interesantemente, dispondremos de una forma de estimar de forma optimista una costa inferior para cada solución parcial. A partir de estas herramientas podremos establecer que si la estimación del coste de una solución parcial es mayor que la cota superior global, no merece la pena probar la solución.
+En cada momento nuestro algoritmo tendrá presente una \textbf{cota superior global}, en este caso el coste de la mejor ruta encontrada hasta ahora. Si vemos que una solución parcial que estamos explorando supera este coste, la descartaremos inmediatamente. Más interesantemente, dispondremos de una forma de estimar de forma optimista una \textbf{costa inferior} para cada solución parcial. A partir de estas herramientas podremos establecer que si la estimación del coste de una solución parcial es mayor que la cota superior global, no merece la pena probar la solución.
 
-Además, nuestro algoritmo guardará los candidatos a seguir explorando en una cola con prioridad ordenada según la estimación de cada candidato. De esta manera, los candidatos más prometedores serán explorados antes y además una vez extraigamos de la cola con prioridad un candidato con estimación superior a la cota global, sabremos que todos los que vienen detrás tienen estimación superior, y podremos terminar el algoritmo.
+Además, nuestro algoritmo guardará los candidatos a seguir explorando en una \textbf{cola con prioridad} ordenada según la estimación de cada candidato. De esta manera, los candidatos más prometedores serán explorados antes y además una vez extraigamos de la cola con prioridad un candidato con estimación superior a la cota global, sabremos que todos los que vienen detrás tienen estimación superior, y podremos terminar el algoritmo.
 
-La cota superior será el coste de la mejor solución encontrada hasta el momento. La forma de estimar de forma optimista el coste final de una solución parcial será la siguiente: por cada una de las ciudades que queden por visitar, se encuentra el coste de visitar la ciudad más cercana a esa ciudad. La suma de todos estos costes será una estimación por defecto de la mejor solución que se puede encontrar expandiendo esa solución parcial.
+La cota superior será el coste de la mejor solución encontrada hasta el momento. La forma de estimar de forma optimista el coste final de una solución parcial será la siguiente: por cada una de las ciudades que queden por visitar, se encuentra el coste de visitar la ciudad más cercana a esa ciudad. La suma de todos estos costes será una \textbf{estimación por defecto} de la mejor solución que se puede encontrar expandiendo esa solución parcial.
 
 
 \section{Rendimiento del algoritmo}
@@ -162,6 +162,8 @@ Utilizamos cuatro métricas para medir el rendimiento de nuestra solución:
   \item Rutas completas exploradas
 \end{itemize}
 
+Los sets de datos que usamos para las siguientes pruebas son distintas versiones del fichero de TSPLib \textit{eil51.tsp} truncados.
+ 
 \subsection{Número de nodos explorados}
 \makebox[\textwidth]{\includegraphics{./results/bbnodes.png}}
 Es fácil corroborar el crecimiento explosivo que tiene el número de nodos que se exploran en función del tamaño del problema. Pudiera parecer que esto es necesariamente un fracaso para nuestro algoritmo, pero con una sencilla cuenta podremos comprobar que \textbf{el número de hojas que un algoritmo de fuerza bruta tendría que comprobar es $10^{12}$ veces mayor en el caso con $n = 20$}. Y nos estamos refiriendo exclusivamente al número de hojas, no al de nodos.
@@ -179,6 +181,7 @@ El tiempo de ejecución se convierte también en un problema en sí mismo. Es es
 La comparación con el número de rutas completas que se pueden trazar en el problema es ridícula.
 
 \section{Conclusiones}
+Con esta práctica hemos aprendido cómo funcionan los algoritmos de branch and bound y por qué son la mejor opción para la resolución de cierta clase de problemas. Hemos aprendido cómo utilizando funciones para realizar estimaciones optimistas podemos conseguir descartar un montón de casos que no merece la pena explorar, lo que consigue reducir drásticamente tanto el número de nodos a explorar como el tiempo de ejecución. Asimismo, hemos aprendido que utilizando una cola con prioridad podemos hacer que nuestro algoritmo se encargue de explorar en primer lugar los candidatos más prometedores, resultando en una mejor utilización del tiempo.
 
 
 \end{document}
