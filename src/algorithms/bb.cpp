@@ -37,7 +37,7 @@ int lowerBound(const Map &problem, const vector <int> &left){
 vector <City> bb(const Map &problem) {
     vector <vector <int> > distances = problem.getMatrix();
 
-    vector <City> cities = problem.getCities();
+    vector <City> cities = problem.getCities(), greedyPath;
     uint size = cities.size();
     vector<int> city_ids(size);
     
@@ -47,13 +47,13 @@ vector <City> bb(const Map &problem) {
     );
 
 
-    cities = nearestNeighbour(problem);
+    greedyPath = nearestNeighbour(problem);
     vector <int> curr_solution(1, 1), best_solution(size + 1), left;
     vector <int>::iterator first, last;
     left.reserve(size + 1);
 
     transform(
-        cities.begin(), cities.end(), best_solution.begin(), 
+        greedyPath.begin(), greedyPath.end(), best_solution.begin(), 
         [] (City city) { return city.id; }
     );
 
@@ -115,13 +115,15 @@ vector <City> bb(const Map &problem) {
         }
     }
 
+    vector<int> best_solution_indexes(best_solution.size());
+
     // transform best solution to indexes
     transform(
-        best_solution.begin(), best_solution.end(), best_solution.begin(), 
+        best_solution.begin(), best_solution.end(), best_solution_indexes.begin(), 
         [] (int city_id) { return city_id - 1; }
     );
 
-    permute(cities, best_solution);
+    permute(cities, best_solution_indexes);
 
     return cities;
 }
