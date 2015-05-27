@@ -1,6 +1,7 @@
 #include "Map.h"
 #include <cassert>
 #include <algorithm>
+#include <limits>
 #include <set>
 
 void Map::adjustSizeOfDistanceMatrix(){
@@ -51,7 +52,7 @@ int Map::getDistanceBetween(int first_city_id, int second_city_id) const {
 
 int Map::getMinimumDistance(int city_id) const {
 	uint size = this->distances.size(), i = 0;
-	int min_dist = this->distances[city_id - 1][0];
+	int min_dist = numeric_limits <int>::max();
 
 	while(++i < size){
 		if(min_dist > this->distances[city_id - 1][i] and city_id - 1 != i){

@@ -10,19 +10,6 @@
 using namespace std;
 
 
-template <class T> pair <T, T> findMinimums(vector <T> elements){
-    T mm = elements[0], m = elements[1];
-
-    for(auto el: elements){
-        if(el < mm){
-            m = mm;
-            mm = el;
-        }
-    }
-
-    return make_pair(mm, m);
-}
-
 // ToDo: make in-place
 template <class T> void permute(vector <T> &elements, vector <int> indices){
     
@@ -63,7 +50,6 @@ vector <City> bb(const Map &problem) {
     cities = nearestNeighbour(problem);
     vector <int> curr_solution(1, 1), best_solution(size + 1), left;
     vector <int>::iterator first, last;
-    // best_solution.reserve(size + 1);
     left.reserve(size + 1);
 
     transform(
@@ -85,6 +71,7 @@ vector <City> bb(const Map &problem) {
 
         if(upper_bound > -curr.first){   // upper_bound > current_solution_lower_bound
             curr_solution = curr.second;    
+            curr_cost = -curr.first;
 
             if(curr_solution.size() < size){    // if the solution is not complete yet
                 cout << upper_bound << " " << -curr.first << endl;
@@ -96,9 +83,6 @@ vector <City> bb(const Map &problem) {
                         left.push_back(i + 1);  // push city ids, not indexes
                     }
                 }
-
-
-                curr_cost = -curr.first;
 
                 for(auto city_id: left){
                     int minimum_city_cost = problem.getMinimumDistance(city_id);
@@ -112,18 +96,18 @@ vector <City> bb(const Map &problem) {
                 
                 left.clear();
             } else {  // complete solution
-                // curr_diff = problem.getDistanceBetween(curr_solution.back(), 1);
-                curr_solution.push_back(curr_solution[0]); // close the path
-                curr_cost = problem.computeCostOfPath(curr_solution);
+                curr_diff = problem.getDistanceBetween(curr_solution.back(), 1);
+                curr_cost += curr_diff - problem.getMinimumDistance(curr_solution.back());
 
                 if(curr_cost < upper_bound){
+                    curr_solution.push_back(1); // close the path
                     cout << "Solucion minima encontrada " << curr_cost << endl;
                     upper_bound = curr_cost;
 
                     best_solution = curr_solution;
+                    curr_solution.pop_back();   // remove the loop
                 }
 
-                curr_solution.pop_back();   // remove the loop
             }
         } else {
             cout << "Se debería acabar aquí" << endl;
