@@ -29,6 +29,7 @@ int main(int argc, char **argv){
                 << metrics.nodes_explored << " " 
                 << metrics.max_queue_size << " "
                 << metrics.times_pruned << " "
+                << metrics.complete_paths << " "
                 << metrics.milliseconds << endl;         
         } else {
             cout << problem.computeCostOfPath(solution.first) << endl;
