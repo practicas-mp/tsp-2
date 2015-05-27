@@ -9,11 +9,11 @@ using namespace std;
 
 
 struct Metrics {
-    int nodes_explored, max_queue_size, times_pruned, milliseconds;
+    int nodes_explored, max_queue_size, times_pruned, milliseconds, complete_paths;
     chrono::high_resolution_clock::time_point _start, _end;   
 
     Metrics(){
-        this->nodes_explored = this->max_queue_size = this->times_pruned = 0;
+        this->complete_paths = this->nodes_explored = this->max_queue_size = this->times_pruned = 0;
     }
 
     void start(){
@@ -29,10 +29,13 @@ struct Metrics {
 
 
 ostream& operator<<(ostream& os, const Metrics &metrics){
-    cout << "Nodes explored: " << metrics.nodes_explored << endl;
-    cout << "Maximum queue size: " << metrics.max_queue_size << endl;
-    cout << "Times pruned: " << metrics.times_pruned << endl;
-    cout << "Running time: " << metrics.milliseconds << "ms" << endl;
+    os << "Nodes explored: " << metrics.nodes_explored << endl;
+    os << "Maximum queue size: " << metrics.max_queue_size << endl;
+    os << "Times pruned: " << metrics.times_pruned << endl;
+    os << "Running time: " << metrics.milliseconds << "ms" << endl;
+    os << "Complete paths reached: " << metrics.complete_paths << endl;
+
+    return os;
 }
 
 #endif

@@ -111,6 +111,7 @@ pair <vector <City>, Metrics> bb(const Map &problem) {
                 
                 left.clear();
             } else {  // complete solution
+                metrics.complete_paths++;
                 curr_diff = problem.getDistanceBetween(curr_solution.back(), 1);
                 curr_cost += curr_diff - problem.getMinimumDistance(1);  // fix the first edge
 
