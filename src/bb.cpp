@@ -22,9 +22,14 @@ int main(int argc, char **argv){
         Map problem(input_file);
         auto solution = bb(problem);
 
-        if (strcmp(argv[2], "path") == 0){
-            cout << solution.first;
-            cout << solution.second;         
+        if (strcmp(argv[2], "metrics") == 0){
+            Metrics metrics = solution.second;
+
+            cout 
+                << metrics.nodes_explored << " " 
+                << metrics.max_queue_size << " "
+                << metrics.times_pruned << " "
+                << metrics.milliseconds << endl;         
         } else {
             cout << problem.computeCostOfPath(solution.first) << endl;
         }
