@@ -1,5 +1,7 @@
-#include "structures/Map.h"
 #include "nearest_neighbour.cpp"
+#include "structures/Map.h"
+#include "structures/Metrics.cpp"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
@@ -34,7 +36,10 @@ int lowerBound(const Map &problem, const vector <int> &left){
 }
 
 
-vector <City> bb(const Map &problem) {
+pair <vector <City>, Metrics> bb(const Map &problem) {
+    Metrics metrics;
+    metrics.start();  // start measuring time;
+
     vector <vector <int> > distances = problem.getMatrix();
 
     vector <City> cities = problem.getCities(), greedyPath;
@@ -66,6 +71,17 @@ vector <City> bb(const Map &problem) {
     
 
     while(not ref.empty()){
+            
+        // update metrics
+
+        ++metrics.nodes_explored;
+        
+        if(ref.size() > metrics.max_queue_size){
+            metrics.max_queue_size = ref.size();
+        }
+
+        // start working
+
         curr = ref.top();
         ref.pop();
 
@@ -101,9 +117,6 @@ vector <City> bb(const Map &problem) {
 
                 if(curr_cost < upper_bound){
                     curr_solution.push_back(1); // close the path
-                    cout << "Curr / Actual: " << curr_cost << " " << problem.computeCostOfPath(curr_solution) << endl;
-                    assert(curr_cost == problem.computeCostOfPath(curr_solution));
-                    cout << "Solucion minima encontrada " << curr_cost << endl;
                     upper_bound = curr_cost;
 
                     best_solution = curr_solution;
@@ -113,7 +126,7 @@ vector <City> bb(const Map &problem) {
 
             }
         } else {
-            cout << "Se debería acabar aquí" << endl;
+            ++metrics.times_pruned;
             break;
         }
     }
@@ -125,5 +138,7 @@ vector <City> bb(const Map &problem) {
 
     permute(cities, best_solution);
 
-    return cities;
+    metrics.end();
+
+    return make_pair(cities, metrics);
 }

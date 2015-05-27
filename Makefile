@@ -1,8 +1,8 @@
 CC = g++
-CPPFLAGS = -Wall -std=c++0x -g -I$(INCLUDE) -I$(SRC)
+CPPFLAGS = -std=c++0x -g -I$(INCLUDE) -I$(SRC)
 SRC = ./src
 INCLUDE = ./src/structures
-COMMON = src/structures/Map.cpp src/structures/Map.h src/structures/City.h
+COMMON = $(wildcard $(SRC)/structures/*)
 MAIN = src/main.cpp
 BIN = ./bin
 OBJ = ./obj
@@ -10,16 +10,16 @@ OBJ = ./obj
 all: $(BIN)/nearest_neighbour $(BIN)/best_insertion $(BIN)/lkh $(BIN)/bb $(BIN)/optimum-cost
 
 $(BIN)/nearest_neighbour: src/algorithms/nearest_neighbour.cpp $(COMMON) $(MAIN)
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=nearestNeighbour" -D"SRC=\"../$<\"" -o $@ 
+	$(CC) $(CPPFLAGS) $(MAIN) -D"algorithm=nearestNeighbour" -D"SRC=\"../$<\"" -o $@ 
 
 $(BIN)/best_insertion: src/algorithms/best_insertion.cpp $(COMMON) $(MAIN)
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=bestInsertionPath" -D"SRC=\"../$<\"" -o $@ 
+	$(CC) $(CPPFLAGS) $(MAIN) -D"algorithm=bestInsertionPath" -D"SRC=\"../$<\"" -o $@ 
 
 $(BIN)/lkh: src/algorithms/lkh.cpp $(COMMON) $(MAIN)
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=LKH" -D"SRC=\"../$<\"" -o $@
+	$(CC) $(CPPFLAGS) $(MAIN) -D"algorithm=LKH" -D"SRC=\"../$<\"" -o $@
 
-$(BIN)/bb: src/algorithms/bb.cpp $(COMMON) $(MAIN)
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp -D"algorithm=bb" -D"SRC=\"../$<\"" -o $@
+$(BIN)/bb: src/algorithms/bb.cpp $(COMMON) src/bb.cpp
+	$(CC) $(CPPFLAGS) $(SRC)/bb.cpp -o $@
 
 $(BIN)/optimum-cost: src/optimum-cost.cpp $(COMMON)
 	$(CC) $(CPPFLAGS) $(SRC)/optimum-cost.cpp -o $@ 	
