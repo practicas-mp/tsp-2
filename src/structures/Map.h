@@ -55,6 +55,13 @@ public:
 	int getDistanceBetween(int first_city_id, int second_city_id) const;
 
 	/**
+	 *	Gets the distance to the nearest city
+	 *	@param city_id The id number of the city
+	 * 	@return the distance between that city and its nearest one
+	 */
+	int getMinimumDistance(int city_id) const;
+
+	/**
 	 *	Returns the distances matrix of the map
 	 * 	@return the matrix
 	 */

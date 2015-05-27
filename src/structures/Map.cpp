@@ -49,6 +49,19 @@ int Map::getDistanceBetween(int first_city_id, int second_city_id) const {
 	return this->distances[first_city_id - 1][second_city_id - 1];  // ids go from 1 to N
 }
 
+int Map::getMinimumDistance(int city_id) const {
+	uint size = this->distances.size(), i = 0;
+	int min_dist = this->distances[city_id - 1][0];
+
+	while(++i < size){
+		if(min_dist > this->distances[city_id - 1][i] and city_id - 1 != i){
+			min_dist = this->distances[city_id - 1][i];
+		}
+	}
+
+	return min_dist;
+}
+
 const vector <vector <int> >& Map::getMatrix() const {
 	return this->distances;
 }

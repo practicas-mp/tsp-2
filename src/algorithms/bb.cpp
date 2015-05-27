@@ -36,11 +36,11 @@ template <class T> void permute(vector <T> &elements, vector <int> indices){
 }
 
 
-int lowerBound(const vector <int> &left, const vector <vector <int> > &distances){
+int lowerBound(const Map &problem, const vector <int> &left){
     int acc = 0;
 
     for(auto city_id: left){
-        acc += findMinimums(distances[city_id - 1]).second;  // first is 0
+        acc += problem.getMinimumDistance(city_id);
     }
 
     return acc;
@@ -60,13 +60,20 @@ vector <City> bb(const Map &problem) {
     );
 
 
-    int upper_bound = problem.computeCostOfPath(nearestNeighbour(problem)),
-        curr_cost, curr_diff;
-    vector <int> curr_solution(1, 1), best_solution, left;
+    cities = nearestNeighbour(problem);
+    vector <int> curr_solution(1, 1), best_solution(size + 1), left;
     vector <int>::iterator first, last;
-    best_solution.reserve(size);
-    left.reserve(size);
-    int minimum_cost = lowerBound(city_ids, distances);
+    // best_solution.reserve(size + 1);
+    left.reserve(size + 1);
+
+    transform(
+        cities.begin(), cities.end(), best_solution.begin(), 
+        [] (City city) { return city.id; }
+    );
+
+    int upper_bound = problem.computeCostOfPath(best_solution),
+        curr_cost, curr_diff;
+    int minimum_cost = -lowerBound(problem, city_ids);
     pair <int, vector <int> > curr = make_pair(minimum_cost, curr_solution);
     priority_queue <pair <int, vector <int> > > ref;
     ref.push(curr);
@@ -76,10 +83,11 @@ vector <City> bb(const Map &problem) {
         curr = ref.top();
         ref.pop();
 
-        if(upper_bound >= -curr.first){   // upper_bound > current_solution_lower_bound
+        if(upper_bound > -curr.first){   // upper_bound > current_solution_lower_bound
             curr_solution = curr.second;    
 
             if(curr_solution.size() < size){    // if the solution is not complete yet
+                cout << upper_bound << " " << -curr.first << endl;
                 first = curr_solution.begin(), last = curr_solution.end();
                 unordered_set<int> visited(first, last);
                 
@@ -93,7 +101,7 @@ vector <City> bb(const Map &problem) {
                 curr_cost = -curr.first;
 
                 for(auto city_id: left){
-                    double minimum_city_cost = findMinimums(distances[city_id - 1]).second;
+                    int minimum_city_cost = problem.getMinimumDistance(city_id);
                     curr_diff = problem.getDistanceBetween(curr_solution.back(),
                                                             city_id);
                     curr_solution.push_back(city_id);   // city_ids, not indexes
@@ -104,11 +112,12 @@ vector <City> bb(const Map &problem) {
                 
                 left.clear();
             } else {  // complete solution
+                // curr_diff = problem.getDistanceBetween(curr_solution.back(), 1);
                 curr_solution.push_back(curr_solution[0]); // close the path
                 curr_cost = problem.computeCostOfPath(curr_solution);
 
-                if(curr_cost <= upper_bound){
-                    cout << "Solucion minima encontrada" << curr_cost << endl;
+                if(curr_cost < upper_bound){
+                    cout << "Solucion minima encontrada " << curr_cost << endl;
                     upper_bound = curr_cost;
 
                     best_solution = curr_solution;
@@ -117,7 +126,7 @@ vector <City> bb(const Map &problem) {
                 curr_solution.pop_back();   // remove the loop
             }
         } else {
-            cout << "Se debería acabar aqui" << endl;
+            cout << "Se debería acabar aquí" << endl;
             break;
         }
     }
