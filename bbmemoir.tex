@@ -156,11 +156,27 @@ Debido a que los sets de datos de la libreria TSPLib eran demasiado grandes para
 
 Utilizamos cuatro métricas para medir el rendimiento de nuestra solución:
 \begin{itemize}
-  \item Número de nodos expandidos
+  \item Número de nodos explorados
   \item Tamaño máximo de la cola con prioridad
   \item Tiempo empleado en resolver el problema
   \item Rutas completas exploradas
 \end{itemize}
+
+\subsection{Número de nodos explorados}
+\makebox[\textwidth]{\includegraphics{./results/bbnodes.png}}
+Es fácil corroborar el crecimiento explosivo que tiene el número de nodos que se exploran en función del tamaño del problema. Pudiera parecer que esto es necesariamente un fracaso para nuestro algoritmo, pero con una sencilla cuenta podremos comprobar que \textbf{el número de hojas que un algoritmo de fuerza bruta tendría que comprobar es $10^{12}$ veces mayor en el caso con $n = 20$}. Y nos estamos refiriendo exclusivamente al número de hojas, no al de nodos.
+
+\subsection{Tamaño máximo de la cola con prioridad}
+\makebox[\textwidth]{\includegraphics{./results/bbqueuesize.png}}
+En este caso el crecimiento también es explosivo. Este gráfico nos muestra que el problema se volverá rápidamente intratable mediante este algoritmo debido a las limitaciones de memoria del computador en el que se ejecute el programa. Esta limitación se puede saltar con el algoritmo \textit{beam search}, que solo se queda con las primeras $k$ entradas de la cola de prioridad, desechando el resto.
+
+\subsection{Tiempo de ejecución}
+\makebox[\textwidth]{\includegraphics{./results/bbtime.png}}
+El tiempo de ejecución se convierte también en un problema en sí mismo. Es esta limitación la que nos ha forzado a no probar el programa para tamaños de problema superiores. En cualquier caso, es muchísimo más rápido que la versión sin branch and bound.
+
+\subsection{Rutas completas exploradas}
+\makebox[\textwidth]{\includegraphics{./results/bbcompletepaths.png}}
+La comparación con el número de rutas completas que se pueden trazar en el problema es ridícula.
 
 \section{Conclusiones}
 
